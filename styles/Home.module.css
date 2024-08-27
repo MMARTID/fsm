@@ -1,13 +1,14 @@
 .main {
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   min-height: 100vh;
+  overflow-y: scroll;
   background-color: aquamarine;
 }
 .header {
-  background-color: pink;
   width: 100%;
 
 }
+
