@@ -1,0 +1,56 @@
+/* Estilo general del contenedor del perfil */
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 600px; /* Limita el ancho máximo del contenedor */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    background-color: #f0f4f8;
+}
+
+/* Contenedor del perfil para texto e imagen */
+#profile {
+    flex: 2;    
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo de la imagen de perfil */
+.profile-picture {
+    flex: 1;
+    max-width: 120px;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+}
+
+/* Estilo del texto dentro del contenedor de datos de perfil */
+.profile-data {
+    margin-top: 20px;
+    text-align: center; /* Centra el texto */
+    color: #333; /* Color de texto */
+}
+
+.profile-data p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555; /* Color de texto más suave */
+}
+
+/* Estilo para el nombre de usuario */
+.profile-data h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
