@@ -3,11 +3,15 @@ import React from "react";
 import Navbar from "@/components/navbar";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Box, Button, Text, VStack, Avatar } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+
+export default function Home() {   
+  const { data: session } = useSession();
+
   return (
     <>
       <Head>
@@ -17,14 +21,68 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-        <div className={`${styles.header}`}>
-            <Navbar/>
-        </div>  
+      <div className={`${styles.header}`}>
+        <Navbar />
+      </div>
 
       <main className={`${styles.main} ${inter.className}`}>
-        
-          
-        </main>
+
+      
+
+
+      <logWith />
+
+
+        {/*lógica de autenticación */}
+
+        <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      backgroundColor="gray.50"
+      p={4}
+    >
+      {!session ? (
+        <VStack spacing={6}>
+          <Text fontSize="2xl" fontWeight="bold" color="teal.500">
+            ¡Bienvenido a nuestra plataforma!
+          </Text>
+          <Button
+            size="lg"
+            colorScheme="teal"
+            onClick={() => signIn("google")}
+            boxShadow="lg"
+          >
+            Iniciar sesión con Google
+          </Button>
+        </VStack>
+      ) : (
+        <VStack spacing={6}>
+          <Avatar
+            name={session.user.name}
+            src={session.user.image}
+            size="xl"
+            mb={4}
+            borderColor="teal.500"
+            borderWidth={2}
+          />
+          <Text fontSize="2xl" fontWeight="bold" color="teal.500">
+            Bienvenido, {session.user.name}
+          </Text>
+          <Button
+            size="lg"
+            colorScheme="teal"
+            variant="outline"
+            onClick={() => signOut()}
+            boxShadow="lg"
+          >
+            Cerrar sesión
+          </Button>
+        </VStack>
+      )}
+    </Box>
+      </main>
     </>
   );
 }
