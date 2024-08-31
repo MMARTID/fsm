@@ -17,7 +17,7 @@ const Profile = () => {
         <div className={`${styles.header}`}>
             <Navbar />
          </div>
-      <main className={`${styles.main}`}>
+      <main>
           
             <ProfileInfo />
             
