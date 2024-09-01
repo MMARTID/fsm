@@ -1,11 +1,14 @@
 import React from 'react';
-import { Box, Text, Avatar, Grid, Divider, Tag, TagLabel, VStack, HStack } from '@chakra-ui/react';
+import { Box, Divider, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useUser } from '@/context/UserContext';
-import FollowersSection from './followersSection';
-import GamesSection from './gamesSection';
+import GamesSection from '@/components/profile/gamesSection';
+import AvatarSection from '@/components/profile/avatarSection';
 
 function ProfileInfo() {
   const session = useUser();
+
+  // Mueve useColorModeValue dentro del componente
+  const containerPf = useColorModeValue('white', 'gray.800');
 
   return (
     <Box
@@ -16,35 +19,16 @@ function ProfileInfo() {
       overflow="hidden"
       p={6}
       boxShadow="lg"
-      bg="white"
+      bg={containerPf}
     >
       {/* Cabecera del Perfil */}
       <HStack spacing={6} align="flex-start">
-        <Avatar
-          size="2xl"
-          src={session?.user.image || 'https://bit.ly/dan-abramov'}
-          borderWidth="2px"
-          borderColor="teal.500"
-        />
-        <VStack spacing={2} align="start">
-          <Text fontSize="2xl" fontWeight="bold">
-            {session?.user.name || 'User'}
-          </Text>
-          <Text color="gray.600" fontSize="lg">
-            {session?.user.bio || 'Bio not available'}
-          </Text>
-
-          <HStack spacing={4}>
-            <FollowersSection></FollowersSection>
-          </HStack>
-
-        </VStack>
+        <AvatarSection name={session?.user?.name} image={session?.user?.image} bio={session?.user?.bio} />
       </HStack>
       <Divider my={6} />
       
       {/* Juegos del Usuario */}
-      <GamesSection></GamesSection>
-      
+      <GamesSection />
     </Box>
   );
 }

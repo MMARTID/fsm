@@ -1,10 +1,13 @@
-// components/Navbar.js
 import React from "react";
-import { Box, Flex, Image, Input, Link, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, Image, Input, Link, useColorModeValue, useMediaQuery } from "@chakra-ui/react";
 
 function Navbar() {
-  // Media query hook to handle responsive styles
   const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+
+  // Use color mode values for background, border, and text
+  const navbarBgColor = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('#dbdbdb', '#444');
+  const inputBgColor = useColorModeValue('#fafafa', '#333');
 
   return (
     <Flex 
@@ -12,11 +15,14 @@ function Navbar() {
       direction="row"
       justify="space-between"
       p="10px 20px"
-      bg="white"
+      bg={navbarBgColor}
       boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
       alignItems="center"
+      height={isSmallerThan768 ? "60px" : "80px"}  // Establece una altura fija para el navbar
+      position="sticky"  // Haz que el navbar se quede en la parte superior al hacer scroll
+      top="0"
+      zIndex="10"  // Asegura que el navbar esté siempre sobre otros elementos
     >
-      {/* Logo */}
       <Box className="navbar-logo" ml={isSmallerThan768 ? "0px" : "20px"}>
         <Image 
           src="/assets/redes.png" 
@@ -27,7 +33,6 @@ function Navbar() {
         />
       </Box>
 
-      {/* Search Bar */}
       <Box 
         className="navbar-search" 
         flex="2" 
@@ -35,15 +40,14 @@ function Navbar() {
       >
         <Input 
           placeholder="Search" 
-          border="1px solid #dbdbdb"
+          border={`1px solid ${borderColor}`}
           borderRadius="5px"
-          bg="#fafafa"
+          bg={inputBgColor}
           p={isSmallerThan768 ? "10px" : "5px"}
           height={isSmallerThan768 ? "50px" : "auto"}
         />
       </Box>
 
-      {/* Icons */}
       <Flex 
         className="navbar-icons" 
         align="center" 
@@ -51,12 +55,12 @@ function Navbar() {
         display={isSmallerThan768 ? "none" : "flex"}
       >
         <Link href="/">
-        <Image 
-          src="/assets/hogar.png" 
-          alt="Home" 
-          boxSize="25px"
-          cursor="pointer"
-        />
+          <Image 
+            src="/assets/hogar.png" 
+            alt="Home" 
+            boxSize="25px"
+            cursor="pointer"
+          />
         </Link>
 
         <Link href="/profile">
