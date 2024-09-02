@@ -1,57 +1,83 @@
-import React from "react";
-import Head from "next/head";
-import Sidebar from "@/components/SideBar";
-import Navbar from "@/components/profile/navbar";
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { Button, Container, HStack, VStack, Text, useBreakpointValue, Box } from "@chakra-ui/react";
+// pages/index.js
+import { AuthAction, useUser, withUser, withUserSSR } from 'next-firebase-auth';
+import { getAuth, signOut } from 'firebase/auth';
+import initAuth from '@/initAuth';
+import Navbar from '@/components/profile/navbar';
+import { Button, Container, Heading, Text, VStack, useToast, Box } from '@chakra-ui/react';
 
-export default function Home() {
-  const { data: session } = useSession();
+// Inicializa la autenticación de Firebase
+initAuth();
 
-  // Responsive font size
-  const fontSize = useBreakpointValue({ base: "lg", md: "xl" });
+function Home() {
+  const user = useUser(); // Cambiado de useAuthUser a useUser
+  const toast = useToast(); // Para mostrar mensajes emergentes
+
+  function handleSignOut() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      toast({
+        title: "Signed out.",
+        description: "You have been signed out successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }).catch((error) => {
+      toast({
+        title: "Sign Out Error",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+      console.error("Sign Out Error", error);
+    });
+  }
+
+  if (user.clientInitialized === false) {
+    // Cuando la autenticación todavía se está inicializando
+    return (
+      <Container centerContent>
+        <Text>Loading...</Text>
+      </Container>
+    );
+  }
 
   return (
-    <>
-      <Head>
-        <title>Gaming Social Network</title>
-        <meta name="description" content="A social network for gamers built with Next.js and Chakra UI" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <Box>  
+        <Navbar />
 
-      {/* Header with Navbar */}
-      <Navbar />
-      
-      <Box as="main" p={4} maxW="container.xl">
-        <HStack spacing={0} align="start">
-          <Sidebar />
-          
-          <Container maxW="container.xl" py={12} minH="100vh">
-            <VStack spacing={6} align="center">
-              {session ? (
-                <VStack spacing={4}>
-                  <Text fontSize={fontSize}>
-                    Enjoy connecting with fellow gamers!
-                  </Text>
-                  <Button colorScheme="blue" onClick={() => signOut()}>
-                    Sign out
-                  </Button>
-                </VStack>
-              ) : (
-                <VStack spacing={4}>
-                  <Text fontSize={fontSize}>
-                    Please sign in to access the full features.
-                  </Text>
-                  <Button colorScheme="blue" onClick={() => signIn('google')}>
-                    Sign in with Google
-                  </Button>
-                </VStack>
-              )}
-            </VStack>
-          </Container>
-        </HStack>
-      </Box>
-    </>
+    <Container centerContent>
+      <VStack spacing={4} align="center">
+        <Heading as="h1">Welcome to Your App</Heading>
+        {user.id ? (
+          <>
+            <Text>Welcome, {user.email}</Text>
+            <Button colorScheme="teal" onClick={handleSignOut}>
+              Sign Out
+            </Button>
+          </>
+        ) : (
+          <Text>Loading...</Text>
+        )}
+      </VStack>
+    </Container>
+    </Box>
   );
 }
+
+// Usar withUserSSR para el getServerSideProps
+export const getServerSideProps = withUserSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  authPageURL: '/auth',
+})(async function getServerSideProps() {
+  return {
+    props: {},
+  };
+});
+
+// Usar withUser para proteger la página
+export default withUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  authPageURL: '/auth',
+})(Home);
