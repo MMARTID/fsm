@@ -1,10 +1,11 @@
 import Head from 'next/head';
-import React from 'react';
 import Navbar from '@/components/profile/navbar';
 import ProfileInfo from '@/components/ProfileInfo';
+import { Container, Heading, Text, VStack } from '@chakra-ui/react';
+import { withUser, withUserSSR } from 'next-firebase-auth';
+import { AuthAction } from 'next-firebase-auth';
 
-
-const Profile = () => {
+function Profile() {
   return (
     <>
     <Head>
@@ -24,6 +25,18 @@ const Profile = () => {
   
     </>
   );
-};
+}
 
-export default Profile;
+export const getServerSideProps = withUserSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  authPageURL: '/auth',
+})(async function getServerSideProps() {
+  return {
+    props: {},
+  };
+});
+
+export default withUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  authPageURL: '/auth',
+})(Profile);

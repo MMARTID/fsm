@@ -1,16 +1,16 @@
-// pages/index.js
 import { AuthAction, useUser, withUser, withUserSSR } from 'next-firebase-auth';
 import { getAuth, signOut } from 'firebase/auth';
 import initAuth from '@/initAuth';
+import { Button, Box, Container, Heading, Text, VStack, useToast } from '@chakra-ui/react';
+import Link from 'next/link';
 import Navbar from '@/components/profile/navbar';
-import { Button, Container, Heading, Text, VStack, useToast, Box } from '@chakra-ui/react';
 
 // Inicializa la autenticación de Firebase
 initAuth();
 
 function Home() {
-  const user = useUser(); // Cambiado de useAuthUser a useUser
-  const toast = useToast(); // Para mostrar mensajes emergentes
+  const user = useUser();
+  const toast = useToast();
 
   function handleSignOut() {
     const auth = getAuth();
@@ -35,7 +35,6 @@ function Home() {
   }
 
   if (user.clientInitialized === false) {
-    // Cuando la autenticación todavía se está inicializando
     return (
       <Container centerContent>
         <Text>Loading...</Text>
@@ -44,21 +43,25 @@ function Home() {
   }
 
   return (
-    <Box>  
-        <Navbar />
-
+    <Box>
+      <Navbar />  
     <Container centerContent>
       <VStack spacing={4} align="center">
         <Heading as="h1">Welcome to Your App</Heading>
         {user.id ? (
           <>
-            <Text>Welcome, {user.email}</Text>
+            <Text>Welcome, {user.displayName}</Text>
             <Button colorScheme="teal" onClick={handleSignOut}>
               Sign Out
             </Button>
+            <Link href="/profile" passHref legacyBehavior>
+              <a style={{ color: '#2b6cb0', textDecoration: 'underline' }}>Go to Profile</a>
+            </Link>
           </>
         ) : (
-          <Text>Loading...</Text>
+          <Link href="/auth" passHref legacyBehavior>
+            <a style={{ color: '#2b6cb0', textDecoration: 'underline' }}>Login</a>
+          </Link>
         )}
       </VStack>
     </Container>
@@ -66,7 +69,6 @@ function Home() {
   );
 }
 
-// Usar withUserSSR para el getServerSideProps
 export const getServerSideProps = withUserSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
   authPageURL: '/auth',
@@ -76,7 +78,6 @@ export const getServerSideProps = withUserSSR({
   };
 });
 
-// Usar withUser para proteger la página
 export default withUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
   authPageURL: '/auth',
