@@ -1,13 +1,22 @@
+import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import "@/styles/globals.css";
-import '@/styles/navbar.css';  // Mover la importación aquí
-import '@/styles/profileInfo.modal.css';  // Mover la importación aquí
+import { SessionProvider } from "next-auth/react";
+import { UserProvider } from '@/context/UserContext';
+import initAuth from "@/initAuth";
+import theme from "@/styles/theme";
 
-export default function App({ Component, pageProps }) {
+initAuth();
+
+function App({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
+    <ChakraProvider theme={theme}>
+      <SessionProvider>
+        <UserProvider>
+          <Component {...pageProps} />
+        </UserProvider>
+      </SessionProvider>
     </ChakraProvider>
   );
 }
 
+export default App;
