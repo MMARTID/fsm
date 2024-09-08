@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import Navbar from '@/components/navbar'
-import ProfileInfo from '@/components/ProfileInfo'
-import { Container, Heading, Text, VStack, Box, Flex, Badge, Progress } from '@chakra-ui/react'
+import Navbar from '@/pages/components/navbar'
+import ProfileInfo from '@/pages/components/ProfileInfo'
+import { Container, Heading, Text, VStack, HStack, Box, Flex, Badge, Progress } from '@chakra-ui/react'
 import { withUser, withUserSSR } from 'next-firebase-auth'
 import { AuthAction } from 'next-firebase-auth'
 import { useState, useEffect } from 'react'
@@ -36,8 +36,14 @@ function Profile() {
 
       <Container maxW="container.xl" py={8}>
         <VStack spacing={8} align="stretch">
-          <ProfileInfo />
-
+          <HStack spacing={4} display={'flex'} align={'stretch'}>
+            <ProfileInfo flex={1} />
+            <Box bg="gray.800" p={6} borderRadius="lg" color="white" flex={2}>
+              <Heading size="lg" mb={4}>Activity Feed</Heading>
+              {/* Add your activity feed component here */}
+              <Text>Recent activities will be displayed here...</Text>
+            </Box>
+          </HStack>
           <Box bg="gray.800" p={6} borderRadius="lg" color="white">
             <Heading size="lg" mb={4}>DevGamer Stats</Heading>
             <Flex justify="space-between" align="center" mb={4}>
@@ -56,12 +62,6 @@ function Profile() {
                 </Box>
               ))}
             </Flex>
-          </Box>
-
-          <Box bg="gray.800" p={6} borderRadius="lg" color="white">
-            <Heading size="lg" mb={4}>Activity Feed</Heading>
-            {/* Add your activity feed component here */}
-            <Text>Recent activities will be displayed here...</Text>
           </Box>
         </VStack>
       </Container>

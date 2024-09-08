@@ -1,5 +1,5 @@
 import React from 'react';
-import FirebaseAuth from '@/components/FirebaseAuth';
+import FirebaseAuth from '@/pages/components/FirebaseAuth';
 import { AuthAction, withUser } from 'next-firebase-auth';
 import { Box, Button, Heading, Text, VStack, useBreakpointValue } from '@chakra-ui/react';
 

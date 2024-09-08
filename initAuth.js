@@ -2,7 +2,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { init } from 'next-firebase-auth';
 import absoluteUrl from 'next-absolute-url';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '@/firebase.config';  // Asegúrate de tener la configuración de Firebase Firestore
+import { db } from '@/pages/api/firebase.config';  // Asegúrate de tener la configuración de Firebase Firestore
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 let admin;
@@ -38,10 +38,12 @@ const saveUserToFirestore = async (user) => {
   if (!docSnapshot.exists()) {
     await setDoc(userDocRef, {
       uid: user.uid,
-      name: user.displayName || "Usuario sin nombre",
+      name: user.displayName || 'Undefined Name',
       email: user.email,
       createdAt: new Date(),
     });
+  } else {
+    
   }
 };
 
