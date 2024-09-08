@@ -1,6 +1,9 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { init } from 'next-firebase-auth';
 import absoluteUrl from 'next-absolute-url';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { db } from '@/firebase.config';  // Asegúrate de tener la configuración de Firebase Firestore
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 let admin;
 if (typeof window === 'undefined') {
@@ -15,13 +18,43 @@ const firebaseClientInitConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,  // Agregar el appId
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Inicialización de Firebase para el cliente
-initializeApp(firebaseClientInitConfig);
+// Inicialización de Firebase para el cliente (evitar duplicación)
+if (!getApps().length) {
+  initializeApp(firebaseClientInitConfig);
+}
 
-// Inicialización de Firebase Admin en el servidor
+// Función para guardar el usuario en Firestore
+const saveUserToFirestore = async (user) => {
+  if (!user) return;
+
+  const userDocRef = doc(db, 'users', user.uid);  // Documento con el UID del usuario
+  const docSnapshot = await getDoc(userDocRef);
+
+  // Si el documento no existe, crearlo
+  if (!docSnapshot.exists()) {
+    await setDoc(userDocRef, {
+      uid: user.uid,
+      name: user.displayName || "Usuario sin nombre",
+      email: user.email,
+      createdAt: new Date(),
+    });
+  }
+};
+
+// Escuchar los cambios en la autenticación y guardar el usuario
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Guardar usuario en Firestore cuando se autentica
+    saveUserToFirestore(user);
+  }
+});
+
+// Inicialización de Firebase Admin en el servidor (evitar duplicación)
 if (typeof window === 'undefined' && admin && !admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -84,10 +117,11 @@ const initAuth = () => {
       return destURL;
     },
 
-    loginAPIEndpoint: '/api/login',
-    logoutAPIEndpoint: '/api/logout',
+    loginAPIEndpoint: '/api/auth/login',
+    logoutAPIEndpoint: '/api/auth/logout',
 
-    // Configuración del servidor - solo se debe definir en el servidor
+    firebaseClientInitConfig,
+
     ...(typeof window === 'undefined' && admin && {
       firebaseAdminInitConfig: {
         credential: admin.credential.cert({
@@ -99,9 +133,6 @@ const initAuth = () => {
       },
     }),
 
-    firebaseClientInitConfig,
-
-    // Configuración de cookies - solo en el servidor
     cookies: typeof window === 'undefined'
       ? {
           name: 'ExampleApp',

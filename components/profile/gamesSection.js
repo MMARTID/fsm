@@ -3,14 +3,15 @@ import { Box, Text, Grid, Tag, TagLabel } from '@chakra-ui/react';
 
 export function GamesSection({ games }) {
   return (
-    <Box>
-      <Text fontSize="xl" fontWeight="bold" mb={4} color="teal.600">
+    <Box textAlign={'center'}>
+      <Text fontSize="xl" fontWeight="bold" mb={4} color="teal.600" >
         Games I Play
       </Text>
-      <Grid 
+      <Grid  
         templateColumns="repeat(auto-fill, minmax(150px, 1fr))" 
         gap={4}
         mb={4}
+        
       >
         {games?.map((game, index) => (
           <Tag 

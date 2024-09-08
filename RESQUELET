@@ -1,0 +1,45 @@
+my-next-app/
+├── public/
+│   └── assets/       
+│       └── # Carpeta para almacenar imágenes, íconos, y otros archivos estáticos.
+├── components/
+│   │ └── profile/
+│   │   ├─ avatarSection.js       # Componente para mostrar la sección de avatar del perfil de usuario.
+│   │   ├─ followersSection.js    # Componente para mostrar la sección de seguidores en el perfil de usuario.
+│   │   └─ gamesSection.js        # Componente para mostrar los juegos asociados al perfil de usuario.
+│   ├── FirebaseAuth.js           # Componente para manejar la autenticación con Firebase.
+│   ├── ProfileInfo.js            # Componente para mostrar la información del perfil del usuario.
+│   ├── NavBar.js                 # Componente para la barra de navegación de la aplicación.
+│   ├── SideBar.js                # Componente para la barra lateral de la aplicación.
+│   └── StyledFireBaseAuth.js     # Componente estilizado para la autenticación con Firebase.
+├── lib/
+│   └── # Carpeta para utilidades y funciones compartidas entre componentes o páginas (actualmente vacía).
+├── context/
+│   └── UserContext.js            # Contexto global para gestionar y compartir la sesión del usuario en toda la aplicación.
+├── pages/
+│   │ └─ api/
+│   │   │ └─ auth/
+│   │   │   └── [...nextauth].js  # Configuración de NextAuth para manejar la autenticación con Google como proveedor.
+│   │   ├─ FirebaseAdmin.js       # (Posible archivo futuro) Configuración para la administración de Firebase en el servidor.
+│   │   ├─ login.js               # API para establecer cookies de autenticación al iniciar sesión.
+│   │   └─ logout.js              # API para eliminar cookies de autenticación al cerrar sesión.
+│   ├── _app.js                   # Archivo principal que envuelve todas las páginas, útil para cargar contextos y estilos globales.
+│   ├── _document.js              # Archivo para modificar el documento HTML base que se sirve al usuario.
+│   ├── auth.js                   # Página de autenticación, redirige a usuarios autenticados y muestra un formulario de login.
+│   ├── index.js                  # Página principal (home) de la aplicación.
+│   └── profile.js                # Página de perfil del usuario, mostrando detalles del mismo.
+├── styles/
+│   ├── profileInfo.modal.css     # Estilos específicos para los modales de información del perfil de usuario.
+│   └── Theme.js                  # Archivo que posiblemente contiene la configuración del tema (colores, tipografía, etc.) de la app.
+├── utils/
+│   └── # Carpeta para utilidades generales (vacía actualmente).
+├── .env.local                    # Archivo para almacenar variables de entorno locales, como claves API y secretos.
+├── .gitignore                    # Archivo para especificar qué archivos y carpetas deben ser ignorados por Git.
+├── firebase.config.js            # Configuración para inicializar Firebase en el cliente y servidor.
+├── initAuth.js                   # Archivo para inicializar la autenticación con Firebase y NextAuth, tanto en el cliente como en el servidor.
+├── jsconfig.json                 # Configuración para JavaScript, útil para mapeos de rutas y alias.
+├── next.config.js                # Configuración principal de Next.js.
+├── next.config.mjs               # (Posible archivo futuro) Configuración alternativa de Next.js usando módulos ES.
+├── package-lock.json             # Archivo generado automáticamente que bloquea las versiones exactas de las dependencias instaladas.
+├── package.json                  # Archivo que define las dependencias del proyecto y scripts de desarrollo.
+└── README.md                     # Archivo que describe el proyecto, cómo instalarlo, usarlo, etc.

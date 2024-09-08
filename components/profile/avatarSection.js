@@ -1,31 +1,32 @@
 import React from 'react';
 import FollowersSection from './followersSection';
 import { Avatar, Text, HStack, VStack, Box } from '@chakra-ui/react';
+import { useUser } from 'next-firebase-auth'; // Asegúrate de que esta importación sea correcta
 
 export function AvatarSection({ name, image, bio }) {
+  const user = useUser(); // Usa el hook para obtener el usuario actual
+
   return (
-    <HStack spacing={6} align="flex-start" mb={6}>
+    <HStack spacing={6} align="flex-start" mb={6} w={"full"}>
       <Avatar
         size="2xl"
-        name={name || 'User'}
-        src={image || 'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/3da39-no-user-image-icon-27.png?fit=500%2C500&ssl=1'}
+        name={user.displayName} // Accede a displayName de user
+        src={user.photoURL} // Usa la foto del usuario si está disponible
         borderWidth="2px"
         borderColor="teal.500"
         boxShadow="md"
       />
-      <VStack spacing={2} align="start">
-
-        <Text fontSize="2xl" fontWeight="bold" color="teal.600">{name || 'User'}</Text>
-        <Text color="gray.600" fontSize="lg">{bio || 'Bio not available'}</Text>
-        
+      <VStack spacing={2} align="start" ml={4}>
+        <Text fontSize="2xl" fontWeight="bold" color="teal.600">
+          {user.displayName}
+        </Text>
+        <Text color="gray.600" fontSize="lg">
+          {bio || 'Bio not available'}
+        </Text>
         <HStack spacing={4}>
-
-          <FollowersSection></FollowersSection>
-
-          </HStack>
-
+          <FollowersSection />
+        </HStack>
       </VStack>
-
     </HStack>
   );
 }

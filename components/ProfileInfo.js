@@ -12,8 +12,7 @@ function ProfileInfo() {
 
   return (
     <Box
-      maxW="1200px"
-      mx="auto"
+      maxW="60%"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -23,7 +22,7 @@ function ProfileInfo() {
     >
       {/* Cabecera del Perfil */}
       <HStack spacing={6} align="flex-start">
-        <AvatarSection name={session?.user?.name} image={session?.user?.image} bio={session?.user?.bio} />
+        <AvatarSection />
       </HStack>
       <Divider my={6} />
       

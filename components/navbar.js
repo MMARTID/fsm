@@ -1,8 +1,16 @@
 import React from "react";
-import { Box, Flex, Image, Input, Link, useColorModeValue, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, Image, Input, Link, useColorModeValue, useBreakpointValue } from "@chakra-ui/react";
 
 function Navbar() {
-  const [isSmallerThan768] = useMediaQuery("(max-width: 768px)");
+  // Define los valores de estilo en función del tamaño de la pantalla
+  const navbarHeight = useBreakpointValue({ base: "60px", md: "70px" });
+  const logoSize = useBreakpointValue({ base: "50px", md: "60px" });
+  const logoMargin = useBreakpointValue({ base: "0px", md: "10px" });
+  const searchMargin = useBreakpointValue({ base: "10px", md: "20px" });
+  const searchPadding = useBreakpointValue({ base: "10px", md: "10px" });
+  const searchHeight = useBreakpointValue({ base: "auto", md: "auto" });
+  const iconsDisplay = useBreakpointValue({ base: "none", md: "flex" });
+  const marginRightIcons = useBreakpointValue({ base: "none", md: "10px" });
 
   // Use color mode values for background, border, and text
   const navbarBgColor = useColorModeValue('white', 'gray.800');
@@ -18,33 +26,34 @@ function Navbar() {
       bg={navbarBgColor}
       boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
       alignItems="center"
-      height={isSmallerThan768 ? "60px" : "80px"}  // Establece una altura fija para el navbar
-      position="sticky"  // Haz que el navbar se quede en la parte superior al hacer scroll
+      height={navbarHeight}
+      position="sticky"
       top="0"
-      zIndex="10"  // Asegura que el navbar esté siempre sobre otros elementos
+      zIndex="10"
     >
-      <Box className="navbar-logo" ml={isSmallerThan768 ? "0px" : "20px"}>
+      <Box className="navbar-logo" ml={logoMargin}>
         <Image 
+          onClick={() => window.location.href = "/"}  // Agrega un evento de clic para redirigir a la página de inicio 
           src="/assets/redes.png" 
           alt="Logo" 
-          boxSize={isSmallerThan768 ? "50px" : "60px"}
+          boxSize={logoSize}
           objectFit="contain" 
-          pr={isSmallerThan768 ? "0px" : "15px"}
+          pr={logoMargin}
         />
       </Box>
 
       <Box 
         className="navbar-search" 
         flex="2" 
-        mx={isSmallerThan768 ? "10px" : "40px"}
+        mx={searchMargin}
       >
         <Input 
           placeholder="Search" 
           border={`1px solid ${borderColor}`}
           borderRadius="5px"
           bg={inputBgColor}
-          p={isSmallerThan768 ? "10px" : "5px"}
-          height={isSmallerThan768 ? "50px" : "auto"}
+          p={searchPadding}
+          height={searchHeight}
         />
       </Box>
 
@@ -52,7 +61,8 @@ function Navbar() {
         className="navbar-icons" 
         align="center" 
         gap="10px"
-        display={isSmallerThan768 ? "none" : "flex"}
+        mr={marginRightIcons}
+        display={iconsDisplay}
       >
         <Link href="/">
           <Image 
