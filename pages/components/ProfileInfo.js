@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Divider, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useUser } from '@/context/UserContext';
-import GamesSection from '@/components/profile/gamesSection';
-import AvatarSection from '@/components/profile/avatarSection';
+import GamesSection from '@/pages/components/profile/gamesSection';
+import AvatarSection from '@/pages/components/profile/avatarSection';
 
 function ProfileInfo() {
   const session = useUser();
@@ -12,7 +12,6 @@ function ProfileInfo() {
 
   return (
     <Box
-      maxW="60%"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"

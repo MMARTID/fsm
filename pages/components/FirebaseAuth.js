@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAuth, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import StyledFirebaseAuth from './StyledFirebaseAuth';
+import StyledFirebaseAuth from '../../styles/StyledFirebaseAuth';
 
 // Configuración de FirebaseAuth para autenticación
 const firebaseAuthConfig = {
